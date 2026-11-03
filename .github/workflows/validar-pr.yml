@@ -1,0 +1,24 @@
+name: Validar PR
+
+# Se ejecuta al abrir, editar o actualizar (push) el PR. Solo REVISA: no comenta ni cambia nada, así que
+# funciona también con los Pull Requests que vienen de un fork (token de solo lectura).
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    # Título y descripción los escribe el estudiante: se pasan por variables de
+    # entorno y NUNCA se insertan con ${{ }} dentro del script (inyección de comandos).
+    env:
+      TITULO: ${{ github.event.pull_request.title }}
+      DESCRIPCION: ${{ github.event.pull_request.body }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar título, nombre y descripción
+        run: python3 .github/scripts/validar_pr.py

@@ -1,0 +1,5 @@
+# Catálogo de imágenes que ya vienen en el proyecto (carpeta src/main/webapp/media).
+# Formato: codigo;titulo;categoria;frio;litros;descripcion;archivo;autor
+R001;Clásica;Gaseosa;8;0.5;La original: fría y sin preguntas;classic.png;freepnglogos.com
+R002;Zero;Gaseosa;7;0.5;La misma sed con menos azúcar;zero.png;freepnglogos.com
+R003;Six pack;Paquete;10;3.0;Seis botellas: la reserva del desierto;six-pack.png;freepnglogos.com

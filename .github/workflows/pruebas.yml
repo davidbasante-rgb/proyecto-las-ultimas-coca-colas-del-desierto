@@ -1,0 +1,62 @@
+name: Pruebas
+
+# Cuatro grupos de pruebas, uno por área. Cada integrante del equipo ve en su Pull Request si SU área
+# ya está lista. Un grupo en rojo NO impide mergear el Pull Request (solo hacen falta las aprobaciones).
+# Cuando se mergea el último Pull Request, los cuatro grupos deben quedar en verde en "main".
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pruebas-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  estructura:
+    name: estructura
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17", cache: maven }
+      - name: Pruebas de la estructura de datos
+        run: mvn -B test "-Dtest=co/umariana/colas/estructura/*Test"
+
+  modelo:
+    name: modelo
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17", cache: maven }
+      - name: Pruebas del modelo
+        run: mvn -B test "-Dtest=co/umariana/colas/modelo/*Test"
+
+  persistencia:
+    name: persistencia
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17", cache: maven }
+      - name: Pruebas de la persistencia (.txt)
+        run: mvn -B test "-Dtest=co/umariana/colas/persistencia/*Test"
+
+  web:
+    name: web
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17", cache: maven }
+      - name: Pruebas de servlets y páginas
+        run: mvn -B test "-Dtest=co/umariana/colas/web/*Test"
