@@ -40,8 +40,34 @@ public class Refresco {
      * </ul>
      */
     public void validar() {
-        // TODO (MODELO): implementar las reglas descritas arriba.
-        throw new UnsupportedOperationException("TODO: validar()");
+        validarTexto(codigo, "El código", true);
+        validarTexto(titulo, "El título", true);
+        validarTexto(categoria, "La categoría", true);
+        validarTexto(archivo, "El archivo", true);
+        validarTexto(descripcion, "La descripción", false);
+
+        if (frio < 1 || frio > 10) {
+            throw new IllegalArgumentException("El frío debe estar entre 1 y 10.");
+        }
+        if (litros <= 0) {
+            throw new IllegalArgumentException("Los litros deben ser mayores que 0.");
+        }
+    }
+
+    /** Revisa un campo de texto: obligatorio (si se pide) y sin ';' ni saltos de línea. */
+    private static void validarTexto(String valor, String nombre, boolean obligatorio) {
+        if (valor == null) {
+            throw new IllegalArgumentException(nombre + " no puede ser nulo.");
+        }
+        if (obligatorio && valor.isBlank()) {
+            throw new IllegalArgumentException(nombre + " no puede estar en blanco.");
+        }
+        if (valor.indexOf(';') >= 0) {
+            throw new IllegalArgumentException(nombre + " no puede contener el carácter ';'.");
+        }
+        if (valor.indexOf('\n') >= 0 || valor.indexOf('\r') >= 0) {
+            throw new IllegalArgumentException(nombre + " no puede tener saltos de línea.");
+        }
     }
 
     public String getCodigo() { return codigo; }
