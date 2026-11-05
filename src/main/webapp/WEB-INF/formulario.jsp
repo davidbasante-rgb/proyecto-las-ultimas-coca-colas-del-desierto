@@ -73,7 +73,7 @@
             gap: 10px;
             margin-top: 20px;
         }
-        .btn {
+        .btn { 
             flex: 1;
             padding: 12px;
             border: none;

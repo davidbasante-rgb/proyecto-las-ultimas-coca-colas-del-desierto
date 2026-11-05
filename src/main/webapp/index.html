@@ -3,22 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Oasis</title>
+    <title>Oasis - Inicio</title>
+    <style>
+        :root {
+            --primary: #007BFF;
+            --primary-hover: #0056b3;
+            --text-main: #2c3e50;
+            --text-muted: #6c757d;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Fondo con gradiente fresco estilo Oasis */
+            background: linear-gradient(135deg, #e0f7fa 0%, #80deea 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin: 0 0 10px 0;
+            color: #004d40;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: #00695c;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        main {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        /* Convertimos la lista en una cuadrícula (Grid) de tarjetas */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 40px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* Estilo de cada tarjeta/enlace */
+        li a {
+            display: block;
+            background: var(--card-bg);
+            padding: 25px 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: var(--text-main);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border-left: 6px solid var(--primary);
+            font-size: 1.3em;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto Hover al pasar el ratón */
+        li a:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-left-color: var(--primary-hover);
+        }
+
+        li a small {
+            display: block;
+            font-size: 0.7em;
+            color: var(--text-muted);
+            font-weight: normal;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        /* Nota del equipo */
+        main > p {
+            text-align: center;
+            font-size: 1em;
+            color: #004d40;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            font-size: 0.95em;
+            color: #004d40;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Pequeña animación de entrada */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-<header>
-    <h1>🥤 Oasis</h1>
-    <p>Las últimas gaseosas del desierto, siempre frías</p>
-</header>
-<main>
-    <ul>
-        <li><a href="catalogo">📦 Catálogo de imágenes<br><small>Agregar imágenes (ya funciona)</small></a></li>
-        <li><a href="listar">📋 Refrescos<br><small>Lista, ranking y promedios</small></a></li>
-        <li><a href="registrar">➕ Registrar<br><small>Agregar un refresco a mano</small></a></li>
-        <li><a href="visor">▶️ Visor<br><small>Anterior / Siguiente</small></a></li>
-    </ul>
-    <p>Las páginas <em>Refrescos</em>, <em>Registrar</em> y <em>Visor</em> las construye el equipo.</p>
-</main>
-<footer>Proyecto final · Estructuras de Datos I</footer>
+    <header>
+        <h1>🥤 Oasis</h1>
+        <p>Las últimas gaseosas del desierto, siempre frías</p>
+    </header>
+    <main>
+        <ul>
+            <li>
+                <a href="catalogo">
+                    📦 Catálogo de imágenes
+                    <small>Agregar imágenes (ya funciona)</small>
+                </a>
+            </li>
+            <li>
+                <a href="listar">
+                    📋 Refrescos
+                    <small>Lista, ranking y promedios</small>
+                </a>
+            </li>
+            <li>
+                <a href="registrar">
+                    ➕ Registrar
+                    <small>Agregar un refresco a mano</small>
+                </a>
+            </li>
+            <li>
+                <a href="visor">
+                    ▶️ Visor
+                    <small>Navegar: Anterior / Siguiente</small>
+                </a>
+            </li>
+        </ul>
+        <p>Las páginas <em>Refrescos</em>, <em>Registrar</em> y <em>Visor</em> las construye el equipo.</p>
+    </main>
+    <footer>
+        Proyecto final · Estructuras de Datos I
+    </footer>
 </body>
 </html>

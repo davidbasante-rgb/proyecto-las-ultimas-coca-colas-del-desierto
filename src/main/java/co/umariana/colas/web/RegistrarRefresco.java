@@ -1,12 +1,14 @@
 package co.umariana.colas.web;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import co.umariana.colas.modelo.Refresco;
-import java.io.IOException;
 
 /**
  * /registrar  (tarea de SERVLETS)
@@ -52,7 +54,7 @@ public class RegistrarRefresco extends HttpServlet {
         } catch (IllegalArgumentException e) {
             //No se aplica NumberFormatException ya que IllegalArgumentException es la superclase de NumberFormatException,
             // por lo que se puede capturar solo IllegalArgumentException
-            req.setAttribute("error", e.toString());
+            req.setAttribute("error", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/vistas/formulario.jsp").forward(req, resp);
         }
     }
