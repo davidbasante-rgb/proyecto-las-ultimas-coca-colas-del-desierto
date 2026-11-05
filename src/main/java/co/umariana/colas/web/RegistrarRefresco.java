@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import co.umariana.colas.modelo.Refresco;
 import java.io.IOException;
 
 /**
@@ -27,13 +28,32 @@ public class RegistrarRefresco extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO (SERVLETS)
-        throw new UnsupportedOperationException("TODO: RegistrarRefresco.doGet()");
+        req.getRequestDispatcher("/WEB-INF/vistas/formulario.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO (SERVLETS)
-        throw new UnsupportedOperationException("TODO: RegistrarRefresco.doPost()");
+        String codigo = req.getParameter("codigo");
+        String titulo = req.getParameter("titulo");
+        String categoria = req.getParameter("categoria");
+        String frioStr = req.getParameter("frio");
+        String litrosStr = req.getParameter("litros");
+        String descripcion = req.getParameter("descripcion");
+        String archivo = req.getParameter("archivo");
+
+        try {
+            int frio = Integer.parseInt(frioStr);
+            double litros = Double.parseDouble(litrosStr);
+
+            Refresco refresco = new Refresco(codigo, titulo, categoria, frio, litros, descripcion, archivo);
+            Contexto.servicio().agregar(refresco);
+
+            resp.sendRedirect("listar");
+        } catch (IllegalArgumentException e) {
+            //No se aplica NumberFormatException ya que IllegalArgumentException es la superclase de NumberFormatException,
+            // por lo que se puede capturar solo IllegalArgumentException
+            req.setAttribute("error", e.toString());
+            req.getRequestDispatcher("/WEB-INF/vistas/formulario.jsp").forward(req, resp);
+        }
     }
 }
