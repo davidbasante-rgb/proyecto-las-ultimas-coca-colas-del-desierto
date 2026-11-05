@@ -3,8 +3,14 @@ package co.umariana.colas.modelo;
 import co.umariana.colas.estructura.Lista;
 import co.umariana.colas.persistencia.Repositorio;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Reglas de negocio del Oasis (tarea de MODELO).
@@ -25,67 +31,125 @@ public class GestorRefrescos implements ServicioRefrescos {
     public GestorRefrescos(Lista<Refresco> lista, Repositorio repositorio) {
         this.lista = lista;
         this.repositorio = repositorio;
-        // TODO (MODELO): cargar los refrescos del repositorio y agregarlos a la lista.
+        try {
+            for (Refresco refresco : repositorio.cargar()) {
+                lista.agregar(refresco);
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public void agregar(Refresco refresco) {
-        // TODO (MODELO): validar (refresco.validar()), rechazar código repetido
-        //  (IllegalArgumentException), agregar al final de la lista y guardar con el repositorio.
-        throw new UnsupportedOperationException("TODO: agregar()");
+        if (refresco == null) {
+            throw new IllegalArgumentException("El refresco no puede ser nulo.");
+        }
+        refresco.validar();
+        if (buscar(refresco.getCodigo()) != null) {
+            throw new IllegalArgumentException("Ya existe un refresco con el código " + refresco.getCodigo() + ".");
+        }
+        lista.agregar(refresco);
+        guardar();
     }
 
     @Override
     public Refresco buscar(String codigo) {
-        // TODO (MODELO)
-        throw new UnsupportedOperationException("TODO: buscar()");
+        if (codigo == null) {
+            return null;
+        }
+        for (Refresco refresco : lista) {
+            if (refresco.getCodigo().equals(codigo)) {
+                return refresco;
+            }
+        }
+        return null;
     }
 
     @Override
     public boolean eliminar(String codigo) {
-        // TODO (MODELO): si existe, eliminarlo de la lista, guardar y devolver true.
-        throw new UnsupportedOperationException("TODO: eliminar()");
+        if (codigo == null) {
+            return false;
+        }
+        int indice = 0;
+        for (Refresco refresco : lista) {
+            if (refresco.getCodigo().equals(codigo)) {
+                lista.eliminar(indice);
+                guardar();
+                return true;
+            }
+            indice++;
+        }
+        return false;
     }
 
     @Override
     public List<Refresco> listar() {
-        // TODO (MODELO): devolver los refrescos en el orden de la lista.
-        throw new UnsupportedOperationException("TODO: listar()");
+        List<Refresco> copia = new ArrayList<>();
+        for (Refresco refresco : lista) {
+            copia.add(refresco);
+        }
+        return copia;
     }
 
     @Override
     public List<Refresco> ranking() {
-        // TODO (MODELO)
-        throw new UnsupportedOperationException("TODO: ranking()");
+        List<Refresco> copia = listar();
+        copia.sort(Comparator.comparingInt(Refresco::getFrio).reversed()
+                .thenComparing(Refresco::getCodigo));
+        return copia;
     }
 
     @Override
     public Map<String, Double> promedioPorCategoria() {
-        // TODO (MODELO)
-        throw new UnsupportedOperationException("TODO: promedioPorCategoria()");
+        Map<String, Integer> sumas = new TreeMap<>();
+        Map<String, Integer> cantidades = new TreeMap<>();
+        for (Refresco refresco : lista) {
+            sumas.merge(refresco.getCategoria(), refresco.getFrio(), Integer::sum);
+            cantidades.merge(refresco.getCategoria(), 1, Integer::sum);
+        }
+        Map<String, Double> promedios = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entrada : sumas.entrySet()) {
+            String categoria = entrada.getKey();
+            promedios.put(categoria, (double) entrada.getValue() / cantidades.get(categoria));
+        }
+        return promedios;
     }
 
     @Override
     public int total() {
-        // TODO (MODELO)
-        throw new UnsupportedOperationException("TODO: total()");
+        return lista.tamano();
     }
 
     @Override
     public Refresco actual() {
-        // TODO (MODELO): usar el cursor de la lista.
-        throw new UnsupportedOperationException("TODO: actual()");
+        return lista.actual();
     }
 
     @Override
     public Refresco siguiente() {
-        // TODO (MODELO)
-        throw new UnsupportedOperationException("TODO: siguiente()");
+        if (lista.estaVacia()) {
+            return null;
+        }
+        lista.avanzar();
+        return lista.actual();
     }
 
     @Override
     public Refresco anterior() {
-        // TODO (MODELO)
-        throw new UnsupportedOperationException("TODO: anterior()");
+        if (lista.estaVacia()) {
+            return null;
+        }
+        lista.retroceder();
+        return lista.actual();
+    }
+
+    /** Guarda en el repositorio el estado actual de la lista. */
+    private void guardar() {
+        try {
+            repositorio.guardar(listar());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }
