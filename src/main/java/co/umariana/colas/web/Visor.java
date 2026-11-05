@@ -25,7 +25,18 @@ public class Visor extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO (SERVLETS)
-        throw new UnsupportedOperationException("TODO: Visor.doGet()");
+        String accion = req.getParameter("accion");
+
+        req.setAttribute("total", Contexto.servicio().total());
+
+        if ("siguiente".equals(accion)) {
+            req.setAttribute("refresco", Contexto.servicio().siguiente());
+        } else if ("anterior".equals(accion)) {
+            req.setAttribute("refresco", Contexto.servicio().anterior());
+        } else {
+            req.setAttribute("refresco", Contexto.servicio().actual());
+        }
+        
+        req.getRequestDispatcher("/WEB-INF/vistas/visor.jsp").forward(req, resp);
     }
 }

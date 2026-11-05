@@ -5,6 +5,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import co.umariana.colas.modelo.GestorRefrescos;
+
 import java.io.IOException;
 
 /**
@@ -19,6 +22,9 @@ public class EliminarRefresco extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // TODO (SERVLETS)
-        throw new UnsupportedOperationException("TODO: EliminarRefresco.doPost()");
+        String codigo = req.getParameter("codigo");
+        GestorRefrescos gestor = (GestorRefrescos) req.getServletContext().getAttribute("gestorRefrescos");
+        gestor.eliminar(codigo);
+        resp.sendRedirect("listar");
     }
 }
